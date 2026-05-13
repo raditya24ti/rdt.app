@@ -1,34 +1,162 @@
 import React, { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
-const Dashboard = React.lazy(() => import("./pages/Dashboard"));
-import Orders from "./pages/Orders";
-import Customers from "./pages/Customers";
-import NotFound from "./pages/NotFound";
-import MainLayout from "./layouts/MainLayout"; 
-import AuthLayout from "./layouts/AuthLayout";
-import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
-import Forgot from "./pages/Auth/Forgot";
+import {
+    Route,
+    Routes,
+    Navigate
+} from "react-router-dom";
 
-const Loading = () => <div className="p-5">Loading</div>;
+/* ========================= */
+/* LAZY PAGES */
+/* ========================= */
+
+const GuestPage = React.lazy(() => import("./pages/GuestPage"));
+
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const Orders = React.lazy(() => import("./pages/Orders"));
+const Customers = React.lazy(() => import("./pages/Customers"));
+
+/* ========================= */
+/* AUTH PAGES */
+/* ========================= */
+
+const Login = React.lazy(() => import("./pages/Auth/Login"));
+const Register = React.lazy(() => import("./pages/Auth/Register"));
+const Forgot = React.lazy(() => import("./pages/Auth/Forgot"));
+
+/* ========================= */
+/* LAYOUT */
+/* ========================= */
+
+import VisitorLayout from "./layouts/VisitorLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import MainLayout from "./layouts/MainLayout";
+
+/* ========================= */
+/* NOT FOUND */
+/* ========================= */
+
+import NotFound from "./pages/NotFound";
+
+/* ========================= */
+/* LOADING */
+/* ========================= */
+
+const Loading = () => (
+    <div className="min-h-screen flex items-center justify-center bg-[#eef3f6]">
+        <h1 className="text-3xl font-bold text-red-500 animate-pulse">
+            Loading...
+        </h1>
+    </div>
+);
+
+/* ========================= */
+/* PROTECTED ROUTE */
+/* ========================= */
+
+const ProtectedRoute = ({ children }) => {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+};
+
+/* ========================= */
+/* APP */
+/* ========================= */
 
 export default function App() {
+
     return (
-        <Suspense fallback={<Loading />}> 
+        <Suspense fallback={<Loading />}>
+
             <Routes>
-                <Route element={<MainLayout />}>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="orders" element={<Orders />} />
-                    <Route path="customers" element={<Customers />} />
-                    <Route path="*" element={<NotFound />} />
+
+                {/* ========================= */}
+                {/* VISITOR LAYOUT */}
+                {/* ========================= */}
+
+                <Route element={<VisitorLayout />}>
+
+                    <Route
+                        path="/"
+                        element={<GuestPage />}
+                    />
+
                 </Route>
 
+
+
+                {/* ========================= */}
+                {/* AUTH LAYOUT */}
+                {/* ========================= */}
+
                 <Route element={<AuthLayout />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/forgot" element={<Forgot />} />
+
+                    <Route
+                        path="/login"
+                        element={<Login />}
+                    />
+
+                    <Route
+                        path="/register"
+                        element={<Register />}
+                    />
+
+                    <Route
+                        path="/forgot"
+                        element={<Forgot />}
+                    />
+
                 </Route>
+
+
+
+                {/* ========================= */}
+                {/* DASHBOARD LAYOUT */}
+                {/* ========================= */}
+
+                <Route
+                    element={
+                        <ProtectedRoute>
+                            <MainLayout />
+                        </ProtectedRoute>
+                    }
+                >
+
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard />}
+                    />
+
+                    <Route
+                        path="/orders"
+                        element={<Orders />}
+                    />
+
+                    <Route
+                        path="/customers"
+                        element={<Customers />}
+                    />
+
+                </Route>
+
+
+
+                {/* ========================= */}
+                {/* 404 PAGE */}
+                {/* ========================= */}
+
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
+
             </Routes>
+
         </Suspense>
     );
 }

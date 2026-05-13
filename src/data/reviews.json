@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "Andi",
+    "review": "Makanannya enak banget!",
+    "image": "https://randomuser.me/api/portraits/men/11.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Siti",
+    "review": "Pengiriman cepat dan rasa autentik.",
+    "image": "https://randomuser.me/api/portraits/women/12.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Budi",
+    "review": "Harga murah dan kualitas mantap.",
+    "image": "https://randomuser.me/api/portraits/men/13.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Rina",
+    "review": "Rendangnya sangat lezat dan porsinya banyak.",
+    "image": "https://randomuser.me/api/portraits/women/14.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Dika",
+    "review": "Pelayanan cepat dan makanan masih hangat.",
+    "image": "https://randomuser.me/api/portraits/men/15.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Maya",
+    "review": "Saya suka ayam pop dan sambalnya pedas mantap.",
+    "image": "https://randomuser.me/api/portraits/women/16.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Fajar",
+    "review": "Website mudah digunakan dan menu lengkap.",
+    "image": "https://randomuser.me/api/portraits/men/17.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Nina",
+    "review": "Masakan Padangnya terasa seperti di restoran asli.",
+    "image": "https://randomuser.me/api/portraits/women/18.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Rizky",
+    "review": "Recommended banget untuk pecinta makanan Padang.",
+    "image": "https://randomuser.me/api/portraits/men/19.jpg"
+  }
+]

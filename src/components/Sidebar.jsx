@@ -1,102 +1,207 @@
 import { FaUser } from "react-icons/fa";
 import { AiFillShopping } from "react-icons/ai";
 import { MdSpaceDashboard } from "react-icons/md";
-import { Link, NavLink } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
+
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
 
+  const navigate = useNavigate();
+
+  /* ACTIVE MENU */
+
   const menuClass = ({ isActive }) =>
-    `flex cursor-pointer items-center rounded-xl p-4  space-x-2
-        ${
-          isActive
-            ? "text-hijau bg-green-200 font-extrabold"
-            : "text-gray-600 hover:text-hijau hover:bg-green-200 hover:font-extrabold"
-        }`;
-        
+    `flex items-center rounded-xl p-4 space-x-3 transition-all duration-300
+    ${
+      isActive
+        ? "bg-green-200 text-hijau font-bold"
+        : "text-gray-600 hover:bg-green-100 hover:text-hijau"
+    }`;
+
+
+
+  /* LOGOUT */
+
+  const handleLogout = () => {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    navigate("/");
+  };
+
+
+
   return (
     <div
       id="sidebar"
-      className="flex min-h-screen w-90 flex-col bg-white p-10 shadow-lg"
+      className="flex min-h-screen w-72 flex-col bg-white p-8 shadow-xl"
     >
-      {/* Logo */}
+
+      {/* LOGO */}
+
       <div id="sidebar-logo" className="flex flex-col">
+
         <span
           id="logo-title"
-          className="font-poppins-extrabold text-[48px] text-gray-900"
+          className="text-5xl font-extrabold text-gray-900"
         >
-          Sedap{" "}
-          <b id="logo-dot" className="text-hijau">
-            .
-          </b>
+          Foodies
+          <span className="text-green-500">.</span>
         </span>
-        <span id="logo-subtitle" className="font-semibold text-gray-400">
-          Modern Admin Dashboard
+
+        <span
+          id="logo-subtitle"
+          className="text-gray-400 font-medium mt-1"
+        >
+          Restaurant Admin Dashboard
         </span>
+
       </div>
 
-      {/* List Menu */}
+
+
+      {/* MENU */}
+
       <div id="sidebar-menu" className="mt-10">
-        <ul id="menu-list" className="space-y-3">
+
+        <ul className="space-y-4">
+
+          {/* DASHBOARD */}
+
           <li>
+
             <NavLink
-              id="menu-1"
-              to="/"
+              to="/dashboard"
               className={menuClass}
             >
-              <MdSpaceDashboard className="mr-4 text-xl" />
-              Dashboard
+              <MdSpaceDashboard className="text-2xl" />
+
+              <span>Dashboard</span>
             </NavLink>
+
           </li>
+
+
+
+          {/* ORDERS */}
+
           <li>
+
             <NavLink
-              id="menu-2"
-              to="/Orders"
+              to="/orders"
               className={menuClass}
             >
-              <AiFillShopping className="mr-4 text-xl" />
-              Orders
+              <AiFillShopping className="text-2xl" />
+
+              <span>Orders</span>
             </NavLink>
+
           </li>
+
+
+
+          {/* CUSTOMERS */}
+
           <li>
+
             <NavLink
-              id="menu-3"
-              to="/Customers"
+              to="/customers"
               className={menuClass}
             >
-              <FaUser className="mr-4 text-xl" />
-              Customers
+              <FaUser className="text-2xl" />
+
+              <span>Customers</span>
             </NavLink>
+
           </li>
+
         </ul>
+
       </div>
 
-      {/* Footer */}
+
+
+      {/* FOOTER */}
+
       <div id="sidebar-footer" className="mt-auto">
+
+        {/* CARD */}
+
         <div
-          id="footer-card"
-          className="bg-hijau px-4 py-2 rounded-md shadow-lg mb-10 flex items-center"
+          className="bg-green-500 rounded-2xl p-5 shadow-lg mb-8"
         >
-          <div id="footer-text" className="text-white text-sm">
-            <span>Please organize your menus through button below!</span>
-            <div
-              id="add-menu-button"
-              className="flex justify-center items-center p-2 mt-3 bg-white rounded-md space-x-2"
-            >
-              <span className="text-gray-600 flex items-center">Add Menus</span>
-            </div>
-          </div>
-          <img
-            id="footer-avatar"
-            className="w-20 rounded-full"
-            src="https://avatar.iran.liara.run/public/28"
-          />
+
+          <p className="text-white text-sm leading-relaxed">
+            Kelola menu restoran dan pantau pesanan pelanggan dengan mudah.
+          </p>
+
+          <button
+            className="mt-5 w-full bg-white text-green-600 font-semibold py-2 rounded-lg hover:bg-gray-100 transition"
+          >
+            Add Menu
+          </button>
+
         </div>
-        <span id="footer-brand" className="font-bold text-gray-400">
-          Sedap Restaurant Admin Dashboard
-        </span>
-        <p id="footer-copyright" className="font-light text-gray-400">
-          &copy; 2025 All Right Reserved
-        </p>
+
+
+
+        {/* USER */}
+
+        <div className="flex items-center gap-4 mb-5">
+
+          <img
+            className="w-14 h-14 rounded-full object-cover"
+            src="https://avatar.iran.liara.run/public/28"
+            alt="avatar"
+          />
+
+          <div>
+
+            <h3 className="font-bold text-gray-700">
+              Admin Foodies
+            </h3>
+
+            <p className="text-sm text-gray-400">
+              Restaurant Manager
+            </p>
+
+          </div>
+
+        </div>
+
+
+
+        {/* LOGOUT BUTTON */}
+
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition"
+        >
+
+          <FiLogOut />
+
+          Logout
+
+        </button>
+
+
+
+        {/* COPYRIGHT */}
+
+        <div className="mt-8 text-center">
+
+          <span className="font-bold text-gray-400">
+            Foodies Dashboard
+          </span>
+
+          <p className="text-sm text-gray-400 mt-1">
+            © 2025 All Rights Reserved
+          </p>
+
+        </div>
+
       </div>
     </div>
   );
