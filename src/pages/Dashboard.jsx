@@ -11,7 +11,7 @@ export default function Dashboard() {
                     </div>
                     <div id="orders-info" className="flex flex-col">
                         <span id="orders-count" className="text-2xl font-bold">75</span>
-                        <span id="orders-text" className="text-gray-400">Total Orders</span>
+                        <span id="orders-text" className="text-gray-400">Total DNV</span>
                     </div>
                 </div>
 
@@ -21,7 +21,7 @@ export default function Dashboard() {
                     </div>
                     <div id="delivered-info" className="flex flex-col">
                         <span id="delivered-count" className="text-2xl font-bold">175</span>
-                        <span id="delivered-text" className="text-gray-400">Total Delivered</span>
+                        <span id="delivered-text" className="text-gray-400">Total DNV</span>
                     </div>
                 </div>
 
@@ -31,7 +31,7 @@ export default function Dashboard() {
                     </div>
                     <div id="canceled-info" className="flex flex-col">
                         <span id="canceled-count" className="text-2xl font-bold">40</span>
-                        <span id="canceled-text" className="text-gray-400">Total Canceled</span>
+                        <span id="canceled-text" className="text-gray-400">Total DNV</span>
                     </div>
                 </div>
 

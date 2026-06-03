@@ -1,19 +1,13 @@
 import React, { Suspense } from "react";
-import {
-    Route,
-    Routes,
-    Navigate
-} from "react-router-dom";
-
-/* ========================= */
-/* LAZY PAGES */
-/* ========================= */
+import { Route, Routes, Navigate } from "react-router-dom";
 
 const GuestPage = React.lazy(() => import("./pages/GuestPage"));
 
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Orders = React.lazy(() => import("./pages/Orders"));
 const Customers = React.lazy(() => import("./pages/Customers"));
+// 1. Komponen Products sekarang sudah di-import dan didefinisikan di sini:
+const Products = React.lazy(() => import("./pages/Products")); 
 
 /* ========================= */
 /* AUTH PAGES */
@@ -30,7 +24,7 @@ const Forgot = React.lazy(() => import("./pages/Auth/Forgot"));
 import VisitorLayout from "./layouts/VisitorLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
-
+import ProductDetail from "./pages/ProductDetail";
 /* ========================= */
 /* NOT FOUND */
 /* ========================= */
@@ -42,11 +36,11 @@ import NotFound from "./pages/NotFound";
 /* ========================= */
 
 const Loading = () => (
-    <div className="min-h-screen flex items-center justify-center bg-[#eef3f6]">
-        <h1 className="text-3xl font-bold text-red-500 animate-pulse">
-            Loading...
-        </h1>
-    </div>
+  <div className="min-h-screen flex items-center justify-center bg-[#eef3f6]">
+    <h1 className="text-3xl font-bold text-red-500 animate-pulse">
+      Loading...
+    </h1>
+  </div>
 );
 
 /* ========================= */
@@ -54,14 +48,13 @@ const Loading = () => (
 /* ========================= */
 
 const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
 
-    const token = localStorage.getItem("token");
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (!token) {
-        return <Navigate to="/login" replace />;
-    }
-
-    return children;
+  return children;
 };
 
 /* ========================= */
@@ -69,94 +62,57 @@ const ProtectedRoute = ({ children }) => {
 /* ========================= */
 
 export default function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        {/* ========================= */}
+        {/* VISITOR LAYOUT */}
+        {/* ========================= */}
 
-    return (
-        <Suspense fallback={<Loading />}>
+        <Route element={<VisitorLayout />}>
+          <Route path="/" element={<GuestPage />} />
+        </Route>
 
-            <Routes>
+        {/* ========================= */}
+        {/* AUTH LAYOUT */}
+        {/* ========================= */}
 
-                {/* ========================= */}
-                {/* VISITOR LAYOUT */}
-                {/* ========================= */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
 
-                <Route element={<VisitorLayout />}>
+          <Route path="/register" element={<Register />} />
 
-                    <Route
-                        path="/"
-                        element={<GuestPage />}
-                    />
+          <Route path="/forgot" element={<Forgot />} />
+        </Route>
 
-                </Route>
+        {/* ========================= */}
+        {/* DASHBOARD LAYOUT */}
+        {/* ========================= */}
 
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
 
+          <Route path="/orders" element={<Orders />} />
 
-                {/* ========================= */}
-                {/* AUTH LAYOUT */}
-                {/* ========================= */}
+          <Route path="/customers" element={<Customers />} />
+          
+          {/* 2. Sekarang baris ini tidak akan error lagi */}
+          <Route path="products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} /> 
+        </Route>
 
-                <Route element={<AuthLayout />}>
+        {/* ========================= */}
+        {/* 404 PAGE */}
+        {/* ========================= */}
 
-                    <Route
-                        path="/login"
-                        element={<Login />}
-                    />
-
-                    <Route
-                        path="/register"
-                        element={<Register />}
-                    />
-
-                    <Route
-                        path="/forgot"
-                        element={<Forgot />}
-                    />
-
-                </Route>
-
-
-
-                {/* ========================= */}
-                {/* DASHBOARD LAYOUT */}
-                {/* ========================= */}
-
-                <Route
-                    element={
-                        <ProtectedRoute>
-                            <MainLayout />
-                        </ProtectedRoute>
-                    }
-                >
-
-                    <Route
-                        path="/dashboard"
-                        element={<Dashboard />}
-                    />
-
-                    <Route
-                        path="/orders"
-                        element={<Orders />}
-                    />
-
-                    <Route
-                        path="/customers"
-                        element={<Customers />}
-                    />
-
-                </Route>
-
-
-
-                {/* ========================= */}
-                {/* 404 PAGE */}
-                {/* ========================= */}
-
-                <Route
-                    path="*"
-                    element={<NotFound />}
-                />
-
-            </Routes>
-
-        </Suspense>
-    );
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+  );
 }
