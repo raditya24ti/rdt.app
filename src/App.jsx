@@ -25,6 +25,7 @@ import VisitorLayout from "./layouts/VisitorLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import ProductDetail from "./pages/ProductDetail";
+import Notes from "./pages/Notes";
 /* ========================= */
 /* NOT FOUND */
 /* ========================= */
@@ -102,9 +103,9 @@ export default function App() {
 
           <Route path="/customers" element={<Customers />} />
           
-          {/* 2. Sekarang baris ini tidak akan error lagi */}
           <Route path="products" element={<Products />} />
             <Route path="/products/:id" element={<ProductDetail />} /> 
+            <Route path="/notes" element={<Notes />} /> 
         </Route>
 
         {/* ========================= */}

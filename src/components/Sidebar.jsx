@@ -1,4 +1,4 @@
-import { MdFastfood } from "react-icons/md";
+import { MdFastfood, MdNotes } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { AiFillShopping } from "react-icons/ai";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -83,6 +83,12 @@ export default function Sidebar() {
             <NavLink id="menu-4" to="/products" className={menuClass}>
               <MdFastfood className="mr-4 text-xl" />
               Products
+            </NavLink>
+          </li>
+            <li>
+            <NavLink id="menu-4" to="/notes" className={menuClass}>
+              <MdNotes  className="mr-4 text-xl" />
+              Notes
             </NavLink>
           </li>
         </ul>

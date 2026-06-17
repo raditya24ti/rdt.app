@@ -1,243 +1,144 @@
-import React, { useState } from "react";
+import { BsFillExclamationDiamondFill } from "react-icons/bs";
+import { ImSpinner2 } from "react-icons/im";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
-import { BsFillExclamationDiamondFill } from "react-icons/bs";
-import { ImSpinner2 } from "react-icons/im";
-
 export default function Login() {
-
-    const navigate = useNavigate();
-
-    const [loading, setLoading] = useState(false);
-
-    const [error, setError] = useState("");
-
-    const [dataForm, setDataForm] = useState({
-        username: "",
-        password: "",
-    });
-
-    /* HANDLE INPUT */
-
-    const handleChange = (evt) => {
-
-        const { name, value } = evt.target;
-
-        setDataForm({
-            ...dataForm,
-            [name]: value,
-        });
-    };
-
-    /* HANDLE LOGIN */
-
-    const handleSubmit = async (e) => {
-
-        e.preventDefault();
-
-        setLoading(true);
-
-        setError("");
-
-        axios({
-            method: "post",
-            url: "https://dummyjson.com/auth/login",
-
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-            data: {
-                username: dataForm.username,
-                password: dataForm.password,
-                expiresInMins: 30,
-            },
-        })
-
-        .then((response) => {
-
-            if (response.data.accessToken) {
-
-                /* SIMPAN TOKEN */
-
-                localStorage.setItem(
-                    "token",
-                    response.data.accessToken
-                );
-
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(response.data)
-                );
-
-                /* REDIRECT KE DASHBOARD */
-
-                navigate("/dashboard");
-            }
-        })
-
-        .catch((err) => {
-
-            setError(
-                err.response?.data?.message ||
-                "Username atau Password salah!"
-            );
-        })
-
-        .finally(() => {
-            setLoading(false);
-        });
-    };
-
-    return (
-        <div className="min-h-screen bg-[#eef3f6] flex items-center justify-center px-5">
-
-            <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
-
-                {/* TITLE */}
-
-                <div className="text-center mb-8">
-
-                    <h1 className="text-4xl font-bold text-red-500">
-                        Foodies
-                    </h1>
-
-                    <p className="text-gray-500 mt-2">
-                        Welcome Back 👋
-                    </p>
-                </div>
-
-
-
-                {/* ERROR */}
-
-                {error && (
-
-                    <div className="bg-red-100 border border-red-300 text-red-700 p-4 rounded-xl mb-5 flex items-center">
-
-                        <BsFillExclamationDiamondFill className="me-2 text-lg" />
-
-                        {error}
-                    </div>
-                )}
-
-
-
-                {/* LOADING */}
-
-                {loading && (
-
-                    <div className="bg-blue-100 border border-blue-300 text-blue-700 p-4 rounded-xl mb-5 flex items-center">
-
-                        <ImSpinner2 className="animate-spin me-2" />
-
-                        Memproses Login...
-                    </div>
-                )}
-
-
-
-                {/* FORM */}
-
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-5"
-                >
-
-                    {/* USERNAME */}
-
-                    <div>
-
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Username
-                        </label>
-
-                        <input
-                            type="text"
-                            name="username"
-                            value={dataForm.username}
-                            onChange={handleChange}
-                            placeholder="Masukkan Username"
-                            required
-                            className="w-full border border-gray-300 bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-400"
-                        />
-                    </div>
-
-
-
-                    {/* PASSWORD */}
-
-                    <div>
-
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Password
-                        </label>
-
-                        <input
-                            type="password"
-                            name="password"
-                            value={dataForm.password}
-                            onChange={handleChange}
-                            placeholder="Masukkan Password"
-                            required
-                            className="w-full border border-gray-300 bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-400"
-                        />
-                    </div>
-
-
-
-                    {/* FORGOT PASSWORD */}
-
-                    <div className="flex justify-end">
-
-                        <Link
-                            to="/forgot"
-                            className="text-sm text-red-500 hover:text-red-600"
-                        >
-                            Forgot Password?
-                        </Link>
-                    </div>
-
-
-
-                    {/* BUTTON LOGIN */}
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full py-3 rounded-xl text-white font-semibold transition ${
-                            loading
-                                ? "bg-red-300 cursor-not-allowed"
-                                : "bg-red-500 hover:bg-red-600"
-                        }`}
-                    >
-                        {loading ? "Logging in..." : "Login"}
-                    </button>
-
-                </form>
-
-
-
-                {/* REGISTER */}
-
-                <div className="text-center mt-6">
-
-                    <p className="text-gray-500">
-
-                        Belum punya akun?
-
-                        <Link
-                            to="/register"
-                            className="text-red-500 font-semibold ms-1"
-                        >
-                            Sign Up
-                        </Link>
-
-                    </p>
-                </div>
-
-            </div>
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [dataForm, setDataForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+
+    setDataForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const API_URL =
+        "https://vdrwidshwlktwbknnwmp.supabase.co/rest/v1/admin";
+
+      const API_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkcndpZHNod2xrdHdia25ud21wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MzYwNjYsImV4cCI6MjA5NzIxMjA2Nn0.3_LyZ84vbuz7eYQ2hvWkuW75wY7iBfAsXamb5ULUTGA";
+
+      const headers = {
+        apikey: API_KEY,
+        Authorization: `Bearer ${API_KEY}`,
+        "Content-Type": "application/json",
+      };
+
+      const response = await axios.get(
+        `${API_URL}?email=eq.${dataForm.email}&password=eq.${dataForm.password}`,
+        { headers }
+      );
+
+      if (response.data.length === 0) {
+        throw new Error("Email atau password salah");
+      }
+
+      const admin = response.data[0];
+
+      localStorage.setItem("admin", JSON.stringify(admin));
+
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Login gagal"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
+        Welcome Back 👋
+      </h2>
+
+      {error && (
+        <div className="flex items-center gap-2 bg-red-100 text-red-600 p-3 rounded-lg mb-4">
+          <BsFillExclamationDiamondFill />
+          <span>{error}</span>
         </div>
-    );
+      )}
+
+      <form onSubmit={handleSubmit}>
+        {/* Email */}
+        <div className="mb-5">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+
+          <input
+            type="email"
+            name="email"
+            value={dataForm.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm"
+            placeholder="Masukkan email"
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Password
+          </label>
+
+          <input
+            type="password"
+            name="password"
+            value={dataForm.password}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm"
+            placeholder="********"
+            required
+          />
+        </div>
+
+        <div className="flex justify-end mb-5">
+          <Link
+            to="/forgot"
+            className="text-sm text-green-600 hover:underline"
+          >
+            Forgot Password?
+          </Link>
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex justify-center items-center"
+        >
+          {loading ? (
+            <ImSpinner2 className="animate-spin text-xl" />
+          ) : (
+            "Login"
+          )}
+        </button>
+      </form>
+    </div>
+  );
 }
